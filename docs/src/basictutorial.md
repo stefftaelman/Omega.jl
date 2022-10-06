@@ -82,12 +82,13 @@ coinflips = randarray(coinflips_)
 
 ```julia
 julia> rand(coinflips)
-```
+
 4-element Array{Bool,1}:
   true
  false
  false
  false
+```
 
 Now we can condition the model.
 We want to find the conditional distribution over the weight of the coin given some observations. 
@@ -108,10 +109,10 @@ condition = coinflips ==ᵣ observations
 We can use `rand` to sample from the model conditioned on `condition` being true:
 
 ```julia
-weight_samples = rand(weight, condition, 10; alg = RejectionSample)
+weight_samples = rand(weight, condition, 10000; alg = RejectionSample)
 ```
 
-`weight_samples` is a set of `10` samples from the conditional (sometimes called posterior) distribution of `weight` condition on the fact that coinflips == observations.
+`weight_samples` is a set of `10000` samples from the conditional (sometimes called posterior) distribution of `weight` condition on the fact that coinflips == observations.
 
 In this case, `rand` takes
 - A random variable we want to sample from
@@ -122,18 +123,19 @@ Plot a histogram of the weights like before:
 
 ```
 julia> UnicodePlots.histogram(weight_samples)
-             ┌────────────────────────────────────────┐ 
-   (0.1,0.2] │▇ 4                                     │ 
-   (0.2,0.3] │▇▇▇ 22                                  │ 
-   (0.3,0.4] │▇▇▇▇▇▇▇▇▇▇▇ 69                          │ 
-   (0.4,0.5] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 147             │ 
-   (0.5,0.6] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 185       │ 
-   (0.6,0.7] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 226 │ 
-   (0.7,0.8] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 203     │ 
-   (0.8,0.9] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 120                 │ 
-   (0.9,1.0] │▇▇▇▇ 23                                 │ 
-             └────────────────────────────────────────┘ 
-
+              ┌                                        ┐ 
+   [0.0, 0.1) ┤ 2                                        
+   [0.1, 0.2) ┤▇ 36                                      
+   [0.2, 0.3) ┤▇▇▇ 233                                   
+   [0.3, 0.4) ┤▇▇▇▇▇▇▇▇▇▇ 673                            
+   [0.4, 0.5) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1333                 
+   [0.5, 0.6) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1943        
+   [0.6, 0.7) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 2287   
+   [0.7, 0.8) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 2058      
+   [0.8, 0.9) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1169                    
+   [0.9, 1.0) ┤▇▇▇▇ 266                                  
+              └                                        ┘ 
+                              Frequency
 ```
 
 Observe that our belief about the weight has now changed.
@@ -141,5 +143,7 @@ We are more convinced the coin is biased towards heads (`true`).
 
 Now condition the model on the following set of data and see what it does to the posterior distribution.
 ```julia 
-observations = [true, true, true, true, true, true, true, true, true , true, false]
+observations = [true, true, true, true, true, true, true , true, false]
 ```
+
+(Note: as the only supported sampling method at the moment is rejection sampling, it can take a (possibly looooong) while to condition when sample sizes increase)
