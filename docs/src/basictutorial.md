@@ -1,13 +1,13 @@
 # Basic Tutorial
 
-In this tutorial we will run through the basics of creating a model and conditioning it.
-This tutorial is available in [notebook version](https://github.com/zenna/OmegaModels.jl/blob/master/models/small/coin.ipynb).
+In this tutorial we will run through the basics of creating a model and conditioning it on observed data.
 
 First load Omega:
 
 ```julia
 using Omega
 ```
+
 If you tossed a coin and observed the sequqnce `HHHHH`, you would be a little suspicious, `HHHHHHHH` would make you very suspicious.
 Elementary probability theory tells us that for a fair coin, `HHHHHHHH` is just a likely outcome as `HHTTHHTH`.  What gives?
  We will use Omega to model this behaviour, and see how that belief about a coin changes after observing a number of tosses.
@@ -15,7 +15,7 @@ Elementary probability theory tells us that for a fair coin, `HHHHHHHH` is just 
 Model the coin as a bernoulli distribution.  The weight of a bernoulli determines the probability it comes up true (which represents heads). Use a [beta distribution](https://en.wikipedia.org/wiki/Beta_distribution) to represent our prior belief weight of the coin.
 
 ```julia
-weight = β(2.0, 2.0)
+weight = betarv(2.0, 2.0)
 ```
 
 A beta distribution is appropriate here because it is bounded between 0 and 1. 
@@ -39,6 +39,7 @@ using UnicodePlots
 UnicodePlots.histogram(beta_samples)
 ```
 
+Though exact figures likely vary, it should look a little like this:
 ```
              ┌────────────────────────────────────────┐ 
    (0.0,0.1] │▇▇▇▇▇▇ 279                              │ 
@@ -56,11 +57,8 @@ UnicodePlots.histogram(beta_samples)
 
 The distribution is symmetric around 0.5 and has support over the the interval [0, 1].
 
-So far we have not done anything we couldn't do with `Distributions.jl`.
-A primary distinction between a package like `Distribution.jl`, is that `Omega.jl` allows you to __condition__ probability distributions.
-
 Create a model representing four flips of the coin.
-Since a coin can be heads or tales, the appropriate distribution is the [bernouli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution):
+Since a coin can be either heads or tails, the appropriate distribution is the [bernouli distribution](https://en.wikipedia.org/wiki/Bernoulli_distribution):
 
 
 ```julia
@@ -69,12 +67,12 @@ coinflips_ = [bernoulli(weight, Bool) for i = 1:nflips]
 ```
 
 Take note that `weight` is the random variable defined previously.
-`bernoulli` takes a type as its secoond argument; `Bool` indicates the result will be a `Bool` rather than an `Int`.
+`bernoulli` takes a type as its second argument; `Bool` indicates the result will be a `Bool` rather than an `Int`.
 
-`coinflips` is a normal Julia array of Random Variables (`RandVar`s).
+`coinflips_` is a normal Julia array of Random Variables (`RandVar`s).
 For reasons we will elaborate in later sections, it will be useful to have an `Array`-valued `RandVar` (instead of an `Array` of `RandVar`).
 
-One way to do this (there are several ways discuseed later), is to use the function `randarray`
+One way to do this (there are several ways discussed later), is to use the function `randarray`
 
 ```julia
 coinflips = randarray(coinflips_)
@@ -84,15 +82,15 @@ coinflips = randarray(coinflips_)
 
 ```julia
 julia> rand(coinflips)
+```
 4-element Array{Bool,1}:
   true
  false
  false
  false
-```
 
 Now we can condition the model.
-We want to find the conditional distribution over the weight of the coin given some observations.
+We want to find the conditional distribution over the weight of the coin given some observations. 
 
 First create some fake data
 ```julia
@@ -140,3 +138,8 @@ julia> UnicodePlots.histogram(weight_samples)
 
 Observe that our belief about the weight has now changed.
 We are more convinced the coin is biased towards heads (`true`).
+
+Now condition the model on the following set of data and see what it does to the posterior distribution.
+```julia 
+observations = [true, true, true, true, true, true, true, true, true , true, false]
+```
