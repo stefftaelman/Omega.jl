@@ -1,28 +1,17 @@
 # Omega.jl
 
-| **Documentation**                       | **Build Status**                                                                                |
-|:--------------------------------------- |:----------------------------------------------------------------------------------------------- |
-| [![][docs-latest-img]][docs-latest-url] | [![][travis-img]][travis-url] [![][codecov-img]][codecov-url] |
-
-Omega is a library for causal and probabilistic inference in Julia.
+Omega is a library for causal and probabilistic inference in Julia. This version has been forked from the original zenna/Omega.jl, though from the specific branch "Omegaoldworking" and is used to fix some errors in the documentation there.
 
 # Quick start
 
 ## Install
 
-Omega is built in Julia 1.  You can still easily install it from a Julia repl with:
+This version of Omega is functional in Julia 1.8.2.  You can install it from a terminal by:
 
 ```julia
-] add Omega#master 
+] add Omega#oldbutworking
 ```
 
-See the documentation for how to use Omega. 
 
-[docs-latest-img]: https://img.shields.io/badge/docs-latest-blue.svg
-[docs-latest-url]: https://zenna.github.io/Omega.jl/latest
 
-[travis-img]: https://travis-ci.org/zenna/Omega.jl.svg?branch=master
-[travis-url]: https://travis-ci.org/zenna/Omega.jl
 
-[codecov-img]: https://codecov.io/github/zenna/Omega.jl/coverage.svg?branch=master
-[codecov-url]: http://codecov.io/github/zenna/Omega.jl?branch=master
