@@ -6,14 +6,14 @@ There are two ways to construct random variables: the statistical style, which c
 In the statistical style we create random variables by combining a number of primitives.
 Omega comes with a number of built-in primitive distributions.  One example  is the [standard uniform](https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)#Standard_uniform):
 
-```
+```julia
 x1 = uniform(0.0, 1.0)
 ```
 
 `x1` is a random variable not a sample.
 To construct another random variable `x2`, we do the same. 
 
-```
+```julia
 x2 = uniform(0.0, 1.0)
 ```
 
@@ -92,8 +92,8 @@ x_(rng) = rand(rng) > 0.5
 `x_` is just a normal julia function.  We could sample from it by passing in the `GLOBAL_RNG`
 
 ```julia
-julia> x_(Base.Random.GLOBAL_RNG)
-true
+using Random
+x_(Random.GLOBAL_RNG)
 ```
 
 However, in order to use `x` for conditional or causal inference we must turn it into a `RandVar`.
@@ -128,12 +128,11 @@ z = x + y
 
 ### Random Variable Families 
 
-Often we want to parameterize a random variable.  To do this we create functions with addition arguments,
-and pass arguments to `ciid`.
+Often we want to parameterize a random variable.  To do this we create functions with addition arguments and pass the arguments to `ciid`.
 
 ```julia
 "Uniform distribution between `a` and `b`"
-unif(rng, a, b) = rand(rng) * (b - a) + b  
+unif(rng, a, b) = rand(rng) * (b - a) + a  
 
 # x is uniformly distributed between 10 and 20
 x = ciid(unif, 10, 20)
@@ -142,11 +141,14 @@ x = ciid(unif, 10, 20)
 And hence if we wanted to create a method that created independent uniformly distributed random variables, we could do it like so:
 
 ```julia
-uniform(a, b) = ciid(rng -> rand(rng) * (b - a) + b)
+unif2(a, b) = ciid(rng -> rand(rng) * (b - a) + a)
 
-# x is distributed between 30 and 40 (and independent of x)
-x = ciid(unif, 30, 40)
+# x is distributed between 30 and 40 (and independent of y)
+x = unif2(30, 40)
 
-# x is distributed between 30 and 40 (and independent of x)
-y = ciid(unif, 30, 40)
+# y is distributed between 30 and 40 (and independent of x)
+y = unif2(30, 40)
+
+# as we can see here:
+println(rand((x, y)))
 ```
