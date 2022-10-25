@@ -41,18 +41,19 @@ UnicodePlots.histogram(beta_samples)
 
 Though exact figures likely vary, it should look a little like this:
 ```
-             ┌────────────────────────────────────────┐ 
-   (0.0,0.1] │▇▇▇▇▇▇ 279                              │ 
-   (0.1,0.2] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 727                   │ 
-   (0.2,0.3] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1218       │ 
-   (0.3,0.4] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1354    │ 
-   (0.4,0.5] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1482 │ 
-   (0.5,0.6] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1426  │ 
-   (0.6,0.7] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1406   │ 
-   (0.7,0.8] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1124         │ 
-   (0.8,0.9] │▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 702                    │ 
-   (0.9,1.0] │▇▇▇▇▇▇ 282                              │ 
-             └────────────────────────────────────────┘
+              ┌                                        ┐ 
+   [0.0, 0.1) ┤▇▇▇▇▇▇ 280                                
+   [0.1, 0.2) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 767                    
+   [0.2, 0.3) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1132           
+   [0.3, 0.4) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1364      
+   [0.4, 0.5) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1489   
+   [0.5, 0.6) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1468   
+   [0.6, 0.7) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1348      
+   [0.7, 0.8) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 1099            
+   [0.8, 0.9) ┤▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇▇ 775                    
+   [0.9, 1.0) ┤▇▇▇▇▇▇ 278                                
+              └                                        ┘ 
+                              Frequency
 ```
 
 The distribution is symmetric around 0.5 and has support over the the interval [0, 1].
@@ -146,4 +147,6 @@ Now condition the model on the following set of data and see what it does to the
 observations = [true, true, true, true, true, true, true , true, false]
 ```
 
-(Note: as the only supported sampling method at the moment is rejection sampling, it can take a (possibly looooong) while to condition when sample sizes increase)
+(Note: as the only supported sampling method at the moment is rejection sampling, it can take a (possibly looooong) while to condition when sample sizes increase.)
+
+Exercise: see how much we should trust the fairness of a coin given the two examples given at the top: `HHHHHHHH` and `HHTTHHTH`.
