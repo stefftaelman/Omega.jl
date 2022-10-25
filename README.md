@@ -6,10 +6,10 @@ Omega is a library for causal and probabilistic inference in Julia. This version
 
 ## Install
 
-This version of Omega is functional in Julia 1.8.2.  You can install it from a terminal by:
+This version of Omega is functional in Julia 1.0.0.  You can install it from a terminal by:
 
 ```julia
-] add Omega#oldbutworking
+] add https://github.com/stefftaelman/Omega.jl.git
 ```
 
 
